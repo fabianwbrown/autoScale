@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Set AWS Credentials') {
             steps {
-                withCredentials([aws(credentialsId: 'aws_secret_access_key', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'aws_secret_access_key')]) {
+                withCredentials([aws(credentialsId: 'AWS_SECRET_ACCESS_KEY', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
                     echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
                     aws sts get-caller-identity
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/fabianwbrown/autoScale.git'
+                git branch: 'main', url: 'https://github.com/derrickSh43/basic'
             }
         }
         stage('Test Jira Ticket Creation') {
@@ -188,7 +188,7 @@ pipeline {
 
         stage('Plan Terraform') {
             steps {
-                withCredentials([aws(credentialsId: 'aws_secret_access_key', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'aws_secret_access_key')]) {
+                withCredentials([aws(credentialsId: 'AWS_SECRET_ACCESS_KEY', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
                     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
                     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -201,7 +201,7 @@ pipeline {
         stage('Apply Terraform') {
             steps {
                 input message: "Approve Terraform Apply?", ok: "Deploy"
-                withCredentials([aws(credentialsId: 'aws_secret_access_key', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'aws_secret_access_key')]) {
+                withCredentials([aws(credentialsId: 'AWS_SECRET_ACCESS_KEY', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
                     export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
                     export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
